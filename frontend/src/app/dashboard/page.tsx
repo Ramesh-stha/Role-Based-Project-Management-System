@@ -1,9 +1,8 @@
-import React from 'react'
 
 const page = () => {
   return (
     <div>
-      <h1>welcome to signup page</h1>
+      <h1>Welcome to dashboard.</h1>
     </div>
   )
 }
