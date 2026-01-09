@@ -1,30 +1,32 @@
 "use client";
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
-
+import { useRegister } from "@/src/hooks/useRegister";
 interface AddMemberProps {
   closeModal: () => void; // Function to close the modal
 }
 
 interface MemberForm {
-  name: string;
+  username: string;
   email: string;
   phone: string;
   address: string;
   password: string;
+  manager: string;
   role:string;
 }
 
-const AddManager: React.FC<AddMemberProps> = ({ closeModal }) => {
+const AddMember: React.FC<AddMemberProps> = ({ closeModal }) => {
   const [formData, setFormData] = useState<MemberForm>({
-    name: "",
+    username: "",
     email: "",
     phone: "",
     address: "",
     password: "",
-    role:"Manager"
+    manager: "",
+    role:"member"
   });
-
+const{mutate,isPending}=useRegister();
   // Handle input changes
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -34,33 +36,52 @@ const AddManager: React.FC<AddMemberProps> = ({ closeModal }) => {
   // Handle form submission
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log("Manager added:", formData);
-    alert(`Manager ${formData.name} added successfully!`);
-   console.log(formData);
-    // Close the modal automatically
-    closeModal();
 
-    // Reset form
-    setFormData({
-      name: "",
+    mutate(formData,{
+      onSuccess:(data)=>{
+        alert("Member is created successfully!!");
+            // Close the modal automatically
+    closeModal();
+        console.log(formData);
+         setFormData({
+      username: "",
       email: "",
       phone: "",
       address: "",
       password: "",
-      role:"Manager"
+      manager: "",
+      role:"member",
+    });
+      },
+      onError:(err:any)=>{
+        alert("please fill the correct data" +err);
+      }
+    })
+    
+
+
+    // Reset form
+    setFormData({
+      username: "",
+      email: "",
+      phone: "",
+      address: "",
+      password: "",
+      manager: "",
+      role:"member",
     });
   };
 
   return (
     <div className="w-full">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Add Manager</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Add Member</h2>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
         {/* Name */}
         <input
           type="text"
-          name="name"
-          value={formData.name}
+          name="username"
+          value={formData.username}
           onChange={handleChange}
           placeholder="Full Name"
           required
@@ -110,19 +131,31 @@ const AddManager: React.FC<AddMemberProps> = ({ closeModal }) => {
           required
           className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
         />
-        {/* Role */}
-        <input type="hidden" name="role" value="Manager" />
+
+        {/* Manager */}
+        <input
+          type="text"
+          name="manager"
+          value={formData.manager}
+          onChange={handleChange}
+          placeholder="Manager Name"
+          required
+          className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+        />
+
+        {/* automatically set role to member */}
+        <input type="hidden" name="role" value="member"/>
 
         {/* Submit Button */}
         <button
           type="submit"
           className="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition-colors w-full"
         >
-          Add Manager
+          Add Member
         </button>
       </form>
     </div>
   );
 };
 
-export default AddManager;
+export default AddMember;

@@ -1,22 +1,25 @@
-import {useState} from "react";
-import {LoginPayload,loginUser} from "@/src/services/authService";
+"use client";
 
-export const useLogin = () =>{
-    const [loading,setLoading] = useState(false);
-    const [error,setError] = useState<string | null>(null);
+import { useMutation } from "@tanstack/react-query";
+import { loginService } from "../services/login.services";
+import { useQueryClient } from "@tanstack/react-query";
 
-    const login = async(user: LoginPayload) =>{
-        setLoading(false);
-        setError(null);
-       try {
-        const data = await loginUser( user);
-        setLoading(false);
-        return(data);
-       } catch (error:any) {
-        setLoading(false);
-        setError(error.response?.data?.message);
-        throw error;
-       }
-    };
-    return {login,loading,error};
-}
+import {logout} from "../services/login.services"
+import { useRouter } from "next/navigation";
+import { api } from "../services";
+export const useLogin = () => {
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: loginService,
+
+    onSuccess: (data:any) => {
+      const role = data.user.role;
+
+
+
+   
+    },
+  });
+  
+};

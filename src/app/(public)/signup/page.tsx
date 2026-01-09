@@ -2,30 +2,32 @@
 import Link from "next/link";
 import { useState } from "react";
 import {useRegister} from "@/src/hooks/useRegister";
-import { RegisterPayload } from "@/src/services/authService";
-
+import { useRouter } from "next/navigation";
 const page = () => {
-  const [form, setForm] = useState<RegisterPayload>({
+  const [form, setForm] = useState({
     username: "",
     email: "",
     password: "",
   });
 
-  const {register,loading,error} = useRegister();
-
+const {mutate,isPending}=useRegister();
+const router= useRouter();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
   const handleForm = async(e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    mutate(form,{
+      onSuccess:(data)=>{
+        alert ("data is added successfully");
+      
+        router.push("/login");
+      },
+      onError:(err:any)=>{
+        alert("failed to add data");
 
-    try {
-      const data = await register(form);
-      alert("User Registered successfully!!!");
-      setForm({username:"",email:"",password:""});
-    } catch (error) {
-      alert(error);
-    }
+      }
+    })
 
    };
   return (

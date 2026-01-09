@@ -12,7 +12,7 @@ export async function POST(req:Request){
 
         const {username,organizationname,email,password, role}=await req.json();
 
-        if(!username || !organizationname || !email || !password){
+        if(!username  || !email || !password){
             return NextResponse.json({message:"Please fill the input field"},{status:400});
     } 
 
@@ -24,11 +24,14 @@ export async function POST(req:Request){
   }
 
    const hashedPassword = await bcrypt.hash(password, 10);
+   const allowedRoles = ["admin", "member", "manager"];
+const userRole = allowedRoles.includes(role) ? role : "admin";
+
 
 const newUser = await User.create({
     username,
     organizationname,
-    role:role ||"admin",
+    role:userRole,
     email,
    password: hashedPassword,
 });

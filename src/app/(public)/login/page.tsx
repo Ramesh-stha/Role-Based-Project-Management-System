@@ -1,29 +1,35 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { LoginPayload } from "@/src/services/authService";
-import { useLogin } from "@/src/hooks/useLogin";
 
+import { useLogin } from "@/src/hooks/useLogin";
+import { useRouter } from "next/navigation";
+type loginstate={
+  email:string;
+  password:string;
+}
 const page = () => {
-  const [form, setForm] = useState<LoginPayload>({
+  const [form, setForm] = useState<loginstate>({
     email: "",
     password: "",
   });
-
-  const {login,loading,error} = useLogin();
-
+  const {mutate,isPending}=useLogin()
+const router = useRouter();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
   const handleForm = async(e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const data = await login(form);
-      alert("User Logged in successfully.");
-      setForm({email:"",password:""});
-    } catch (error) {
-      alert(error);
-    }
+ 
+    mutate(form,{
+      onSuccess:(data)=>{
+        console.log("Login data",data);
+        alert("Login Ssuccessfully");
+      },
+      onError:(err:any)=>{
+        alert("Login again login failed!!");
+      }
+    })
   };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen w-full bg-gray-900 px-4">

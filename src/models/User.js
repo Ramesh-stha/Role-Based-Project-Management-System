@@ -19,6 +19,17 @@ const userSchema = new mongoose.Schema({
         require:true,
         
    },
+   manager:{
+    type:String,
+   },
+   address:{
+    type:String,
+    require:true,
+   },
+   phone:{
+    type:String,
+    require:true,
+   },
    email:{
     type:String,
     require:true,

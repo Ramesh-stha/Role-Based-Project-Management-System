@@ -1,4 +1,4 @@
-import Organization from '@/src/components/Organization'
+import Organization from '@/src/components/admin/Organization'
 import React from 'react'
 
 const page = () => {

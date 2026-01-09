@@ -1,8 +1,7 @@
 "use client";
-
 import { useState } from "react";
-import AddManager from "@/src/components/AddManager";
-import AddMember from "@/src/components/AddMember";
+import AddManager from "@/src/components/admin/AddManager";
+import AddMember from "@/src/components/admin/AddMember";
 import { HiOutlineX } from "react-icons/hi";
 // Define the type for active form
 type ActiveForm = "member" | "manager" | null;
@@ -12,6 +11,7 @@ const Page: React.FC = () => {
   const [activeForm, setActiveForm] = useState<ActiveForm>(null);
 
   return (
+    
     <div className="min-h-screen w-full flex flex-col items-center justify-start px-4 py-8 bg-gray-100">
       {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-sm sm:max-w-xl md:max-w-3xl">
