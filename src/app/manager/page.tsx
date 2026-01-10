@@ -18,7 +18,19 @@ alert("Please select an image");
   }
 }
 const formData=new FormData();
-formData.append("image",image);
+formData.append("image", image);
+fetch("http://localhost:3000/api/upload-image",{
+  method:"POST",
+  headers:{
+    "Content-type":"application/json"
+  },
+  body:formData
+}).then(response=>{
+  if(!response.ok){
+    throw new Error("Response was not ok:")
+  }
+  return response.json();
+})
 
   return (
     <div>
