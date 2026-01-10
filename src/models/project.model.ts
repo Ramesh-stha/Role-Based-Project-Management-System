@@ -16,11 +16,11 @@ const ProjectSchema= new mongoose.Schema(
             require:true,
         },
         assigneddate:{
-            type:Number,
+            type:Date,
             require:true
         },
         submittiondate:{
-            type:Number,
+            type:Date,
             require:true,
         },
         pdf:{

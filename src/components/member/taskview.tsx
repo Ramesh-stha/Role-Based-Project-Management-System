@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import Photo from "@/public/assets/photo.jpg";
 import { useRouter } from "next/navigation";
+import useGetProject from "@/src/hooks/useAddproject";
 
 
 const Project = [
@@ -14,11 +15,12 @@ const Project = [
 
 const Taskview = () => {
   const router = useRouter();
-
+const { data, isLoading, isError, error } = useGetProject();
   const handlecard = (id:number) => {
     console.log("clicked Project", id);
     router.push(`/member/${id}`);
   };
+  console.log(data);
 
   return (
     <div className="p-6">
