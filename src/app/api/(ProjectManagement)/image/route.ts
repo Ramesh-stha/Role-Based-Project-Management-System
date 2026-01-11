@@ -16,6 +16,7 @@ export const POST = async (request: Request) => {
     }
     if(image){
       const uploadedImage = await UploadImage(file,"image-uploads") as { secret_url: string; public_id: string };
+      
       console.log('Image Result:', uploadedImage);
       const saveinage = await image.create({
         url:uploadedImage.secret_url,

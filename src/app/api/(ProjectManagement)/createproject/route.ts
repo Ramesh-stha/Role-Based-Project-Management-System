@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     const manager = formData.get("manager") as string;
 
     // Convert to Date objects
-    const assigndate = assigndateStr ? new Date(assigndateStr) : undefined;
+    const assigneddate = assigndateStr ? new Date(assigndateStr) : undefined;
     const submittiondate = submittiondateStr ? new Date(submittiondateStr) : undefined;
 
     //  Get files
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     const createdProject = await Project.create({
       projectname,
       description,
-      assigndate,
+      assigneddate,
       submittiondate,
       manager,
       photo: PhotoUrl,
@@ -69,6 +69,18 @@ export async function GET(req:Request){
        return NextResponse.json({message:"project is get successfully",project},{status:200});
        
 
+    }catch(error){
+        return NextResponse.json({message:"internal error occured"},{status:500});
+    }
+    
+}
+
+export async function GETbyId(req:Request,{params}:{params:{id:string}}){
+    try{
+       await ConnectDB();
+        const {id}=params;
+        const project=await Project.findById(id);
+       return NextResponse.json({message:"project is get successfully",project},{status:200});
     }catch(error){
         return NextResponse.json({message:"internal error occured"},{status:500});
     }

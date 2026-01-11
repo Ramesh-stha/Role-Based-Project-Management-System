@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import Photo from "@/public/assets/photo.jpg";
 import { useRouter } from "next/navigation";
-import useGetProject from "@/src/hooks/useAddproject";
+import useGetProject  from "@/src/hooks/useAddproject";
 
 
 const Project = [
@@ -15,21 +15,24 @@ const Project = [
 
 const Taskview = () => {
   const router = useRouter();
-const { data, isLoading, isError, error } = useGetProject();
-  const handlecard = (id:number) => {
-    console.log("clicked Project", id);
-    router.push(`/member/${id}`);
+ const {data,isLoading,error} = useGetProject();
+ console.log("data received is",data);
+  const handlecard = (_id: string) => {
+    console.log("clicked Project", _id);
+    router.push(`/member/${_id}`);
   };
-  console.log(data);
+if(isLoading) return <p>Loading data.....</p>
+if(error) return <p>error to load data ......</p>
+  
 
   return (
     <div className="p-6">
       <p className="text-lg font-semibold mb-4">Assign Task Lists</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {Project.map((item) => (
+        {data.project?.map((item:any) => (
           <div
-            key={item.id}
-            onClick={() => handlecard(item.id)}
+            key={item._id}
+            onClick={() => handlecard(item._id)}
             className="flex gap-4 bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition cursor-pointer"
           >
             <Image
@@ -42,7 +45,7 @@ const { data, isLoading, isError, error } = useGetProject();
             <div>
               <p className="font-semibold">Project Title: {item.Projecttitle}</p>
               <p className="text-sm text-gray-600">Assign Date: {item.Assigndate}</p>
-              <p className="text-sm text-gray-600">Submission Date: {item.submitdate}</p>
+              <p className="text-sm text-gray-600">Submission Date: {item.submittiondate}</p>
             </div>
           </div>
         ))}

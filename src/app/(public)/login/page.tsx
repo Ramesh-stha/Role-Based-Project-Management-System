@@ -24,7 +24,9 @@ const router = useRouter();
     mutate(form,{
       onSuccess:(data)=>{
         console.log("Login data",data);
+        router.push("/");
         alert("Login Ssuccessfully");
+
       },
       onError:(err:any)=>{
         alert("Login again login failed!!");

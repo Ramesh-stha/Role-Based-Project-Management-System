@@ -1,13 +1,13 @@
 import cloudinary from "./cloudinary";
 
-export const UploadImage = async(file:File, folder:string)=>{
+export const UploadImage = async(file:File, folder:string, format?: string)=>{
     const buffer=await  file.arrayBuffer();
     const bytes =Buffer.from(buffer);
     
     return new Promise((resolve,reject)=>{
         cloudinary.uploader.upload_stream({
          
-            format:"pdf",
+            format:format?format: "",
             folder:folder,
         },
     async(error,result)=>{

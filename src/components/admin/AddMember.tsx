@@ -13,7 +13,7 @@ interface MemberForm {
   address: string;
   password: string;
   manager: string;
-  role:string;
+  role: string;
 }
 
 const AddMember: React.FC<AddMemberProps> = ({ closeModal }) => {
@@ -24,11 +24,13 @@ const AddMember: React.FC<AddMemberProps> = ({ closeModal }) => {
     address: "",
     password: "",
     manager: "",
-    role:"member"
+    role: "member",
   });
-const{mutate,isPending}=useRegister();
+  const { mutate, isPending } = useRegister();
   // Handle input changes
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -37,28 +39,26 @@ const{mutate,isPending}=useRegister();
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    mutate(formData,{
-      onSuccess:(data)=>{
+    mutate(formData, {
+      onSuccess: (data) => {
         alert("Member is created successfully!!");
-            // Close the modal automatically
-    closeModal();
+        // Close the modal automatically
+        closeModal();
         console.log(formData);
-         setFormData({
-      username: "",
-      email: "",
-      phone: "",
-      address: "",
-      password: "",
-      manager: "",
-      role:"member",
-    });
+        setFormData({
+          username: "",
+          email: "",
+          phone: "",
+          address: "",
+          password: "",
+          manager: "",
+          role: "member",
+        });
       },
-      onError:(err:any)=>{
-        alert("please fill the correct data" +err);
-      }
-    })
-    
-
+      onError: (err: any) => {
+        alert("please fill the correct data" + err);
+      },
+    });
 
     // Reset form
     setFormData({
@@ -68,13 +68,15 @@ const{mutate,isPending}=useRegister();
       address: "",
       password: "",
       manager: "",
-      role:"member",
+      role: "member",
     });
   };
 
   return (
     <div className="w-full">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Add Member</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+        Add Member
+      </h2>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
         {/* Name */}
@@ -144,7 +146,7 @@ const{mutate,isPending}=useRegister();
         />
 
         {/* automatically set role to member */}
-        <input type="hidden" name="role" value="member"/>
+        <input type="hidden" name="role" value="member" />
 
         {/* Submit Button */}
         <button
