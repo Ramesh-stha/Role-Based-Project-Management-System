@@ -1,7 +1,7 @@
-
 import React, { useRef, useState } from "react";
 import { useAddProject } from "@/src/hooks/useAddproject";
 import { useForm } from "react-hook-form";
+import { useUser } from "@/src/hooks/getUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createProjectSchema,
@@ -14,7 +14,7 @@ const Addproject = () => {
   const { mutate, isPending } = useAddProject();
   const imageRef = useRef<HTMLInputElement>(null);
   const pdfRef = useRef<HTMLInputElement>(null);
-
+const{data:user,isLoading}=useUser();
   const [imagePreview, setImagePreview] = useState<string>("");
 
   const {
@@ -32,8 +32,10 @@ const Addproject = () => {
     formData.append("description", values.description);
     formData.append("assigndate", values.assignedDate);
     formData.append("submittiondate", values.endDate);
-    formData.append("manager", values.manager);
-
+   if (user.role === "admin" && values.manager) {
+      formData.append("manager", values.manager);
+    }
+const status="PENDING";
     if (values.image?.[0]) {
       formData.append("photo", values.image[0]);
     }
@@ -41,9 +43,11 @@ const Addproject = () => {
     if (values.pdf?.[0]) {
       formData.append("pdf", values.pdf[0]);
     }
+    console.log(formData);
 
     mutate(formData, {
       onSuccess: () => alert("Project added successfully"),
+      
     });
   };
 
@@ -74,7 +78,7 @@ const Addproject = () => {
         <input type="file" accept="application/pdf" {...register("pdf")} />
 
         <input {...register("manager")} placeholder="Manager" className="border p-2 rounded" />
-
+    
         <button disabled={isPending} className="bg-blue-600 text-white py-2 rounded">
           {isPending ? "Saving..." : "Add Project"}
         </button>

@@ -23,6 +23,12 @@ const ProjectSchema= new mongoose.Schema(
             type:Date,
             require:true,
         },
+        status:{
+            type:String,
+            require:true,
+            enum:["PENDING","ACCEPTED","COMPLETED"],
+            default:"PENDING"
+        },
         pdf:{
             type:String,
             require: true,

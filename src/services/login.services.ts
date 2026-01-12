@@ -8,7 +8,7 @@ export const loginService = async (data: { email: string; password: string }) =>
 
 
 
-export const logout =async()=>{
+export const getUserService =async()=>{
   try{ 
     const response =await api.post("api/auth/logout");
   return response.data;

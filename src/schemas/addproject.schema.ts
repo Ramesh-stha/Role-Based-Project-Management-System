@@ -5,9 +5,10 @@ export const createProjectSchema = z.object({
   description: z.string().min(5),
   assignedDate: z.string(),
   endDate: z.string(),
-  manager: z.string().min(1),
+  manager: z.string().optional(),
   image: z.any().optional(),
   pdf: z.any().optional(),
+  status: z.enum(["PENDING", "ACCEPTED", "COMPLETED"]).optional(),
 });
 
 export type createProjectValues = z.infer<typeof createProjectSchema>;

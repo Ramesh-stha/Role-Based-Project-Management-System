@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import io from "socket.io";
 
 const MONGODB_URI = process.env.MONGO_URI ;
 

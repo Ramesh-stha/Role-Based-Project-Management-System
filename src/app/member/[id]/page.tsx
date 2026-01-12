@@ -1,7 +1,6 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
-import Photo from "@/public/assets/photo.jpg";
 import Image from "next/image";
 import { useGetProjectbyId } from "@/src/hooks/useAddproject";
 
@@ -41,11 +40,15 @@ export default function TaskDetails({params}:{params:Promise<{ id: string }>}) {
       <p className="mb-2">
         <strong>Submission Date:</strong> {task.task.submittiondate.split("T")[0]}
       </p>
-       <p className="mb-2">
-        <strong>Submission Date:</strong> {task.task.pdf}
-      </p>
+      {task.task.pdf && (
+  <button
+    onClick={() => window.open(task.task.pdf, "_blank")}
+    className="text-white  bg-red-400 rounded-full p-2 m-2 font-semibold hover:bg-green-800 cursor-pointer"
+  >
+    View PDF File
+  </button>)}
       <button
-        className="bg-blue-400 rounded-full p-2 font-semibold text-white shadow-sm shadow-black-500 hover:bg-green-500 cursor-pointer"
+        className="bg-blue-400 rounded-full p-2 font-semibold text-white shadow-sm shadow-black-500 hover:bg-green-800 cursor-pointer"
         onClick={handlesubmit}
       >
         {" "}

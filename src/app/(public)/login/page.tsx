@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-
 import { useLogin } from "@/src/hooks/useLogin";
 import { useRouter } from "next/navigation";
 type loginstate={
@@ -23,7 +22,6 @@ const router = useRouter();
  
     mutate(form,{
       onSuccess:(data)=>{
-        console.log("Login data",data);
         router.push("/");
         alert("Login Ssuccessfully");
 

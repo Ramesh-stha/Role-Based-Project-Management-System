@@ -72,6 +72,8 @@ export async function POST(req: Request) {
     maxAge: 4 * 24 * 60 * 60,
   });
 
+  console.log("User logged in:", response);
+
   return response;
 
   

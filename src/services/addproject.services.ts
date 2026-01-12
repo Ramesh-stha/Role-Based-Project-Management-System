@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 export const addProjectService = async (formData: FormData) => {
   const res = await fetch("/api/createproject", {
     method: "POST",
+     credentials: "include",
     
     body: formData, // ✅ FormData
   });
