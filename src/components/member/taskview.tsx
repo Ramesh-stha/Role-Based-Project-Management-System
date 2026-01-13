@@ -6,12 +6,7 @@ import { useRouter } from "next/navigation";
 import useGetProject  from "@/src/hooks/useAddproject";
 
 
-const Project = [
-  { id: 1, photo: Photo, Projecttitle: "Project management", Assigndate: "2082-07-23", submitdate: "2092-07-30" },
-  { id: 2, photo: Photo, Projecttitle: "Account Management", Assigndate: "2082-07-23", submitdate: "2092-07-30" },
-  { id: 3, photo: Photo, Projecttitle: "MAnaging role", Assigndate: "2082-07-23", submitdate: "2092-07-30" },
-  { id: 4, photo: Photo, Projecttitle: "Technical accessment", Assigndate: "2082-07-23", submitdate: "2092-07-30" },
-];
+
 
 const Taskview = () => {
   const router = useRouter();
@@ -44,8 +39,8 @@ if(error) return <p>error to load data ......</p>
             />
             <div>
               <p className="font-semibold">Project Title: {item.Projecttitle}</p>
-              <p className="text-sm text-gray-600">Assign Date: {item.Assigndate}</p>
-              <p className="text-sm text-gray-600">Submission Date: {item.submittiondate}</p>
+              <p className="text-sm text-gray-600">Assign Date: {item.assigneddate.split("T")[0]}</p>
+              <p className="text-sm text-gray-600">Submission Date: {item.submittiondate.split("T")[0]}</p>
             </div>
           </div>
         ))}

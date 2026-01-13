@@ -1,5 +1,7 @@
 "use client"
 import useGetProject from "@/src/hooks/useAddproject";
+import { useUpdateProjectStatus } from "@/src/hooks/useAddproject";
+import Image from "next/image";
 import React ,{useState} from "react";
 type TableData = {
   _id: number;
@@ -58,8 +60,17 @@ type Selection = {
 };
 
 const BoardTask = () => {
+ const { mutate, isPending } = useUpdateProjectStatus();
+
+
+
   const {data,isLoading}=useGetProject();
     const [option, setOption] = useState("");
+    console.log(data);
+    
+const handleChange = (id: string, status: string) => {
+  mutate({ id, status });
+};
 
 if(isLoading) return <p>Loding ......</p>
   return (
@@ -73,11 +84,13 @@ if(isLoading) return <p>Loding ......</p>
             <th className="p-4 text-center">Status</th>
             <th className="p-4 text-left">Start Date</th>
             <th className="p-4 text-left">End Date</th>
+             <th className="p-4 text-left">Project Photo</th>
+              <th className="p-4 text-left">project PDF</th>
           </tr>
         </thead>
 
         <tbody>
-          {list.map((item:any,index:any) => (
+          {data.project.map((item:any,index:any) => (
             <tr
               key={item._id}
               className={`border-t text-sm hover:bg-gray-50 ${
@@ -89,16 +102,24 @@ if(isLoading) return <p>Loding ......</p>
               <td className="p-4">{item.manager}</td>
               <td className="p-4 text-center">
                 
-      <select value={option} onChange={(e) => setOption(e.target.value)}>
-        <option value="">-- Select --</option>
-        <option value="PENDING">Pending</option>
-        <option value="Dislike">Accepted</option>
-        <option value="Interested">Completed</option>
-      </select>
+<select
+  value={item.status}
+  onChange={(e) => handleChange(item._id, e.target.value)}
+  className="border rounded px-2 py-1"
+>
+  <option value="PENDING">Pending</option>
+  <option value="ACCEPTED">Accepted</option>
+  <option value="COMPLETED">Completed</option>
+</select>
 
               </td>
               <td className="p-4">{item.assigneddate.split("T")[0]}</td>
               <td className="p-4">{item.submittiondate.split("T")[0]}</td>
+               <td> <Image src={item.photo} alt="image not found" width={30} height={20} />
+               </td>
+               <td>
+               
+                <button className="p-4" onClick={()=>window.open(item.pdf, "_blank")} >view pdf</button></td>
             </tr>
           ))}
         </tbody>

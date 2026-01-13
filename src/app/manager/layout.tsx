@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import profile from "@/public/assets/profile.png";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { logout } from "@/src/actions/auth.actions";
 
 interface MenuItem {
   id: number;
@@ -14,11 +15,12 @@ interface MenuItem {
 
 const items: MenuItem[] = [
   { id: 1, name: "Dashboard", href: "/admin/dashboard" },
-  { id: 2, name: "Employee Management", href: "/admin/employeeManagement" },
-  { id: 3, name: "Project Management", href: "/admin/projectManagement" },
+  { id: 2, name: "Employee Management", href: "/manager/pm" },
+  { id: 3, name: "VIew Submitted Task", href: "/manager/managetask" },
 ];
 
 const email = "demo@example.com";
+
 
 export default function managerLayout({
   children,
@@ -26,7 +28,9 @@ export default function managerLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+const handlelogout=()=>{
+  return logout();
+}
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       
@@ -64,6 +68,7 @@ export default function managerLayout({
               {item.name}
             </Link>
           ))}
+          <button onClick={handlelogout} className="bg-red-500 rounded-lg p-2 hover:bg-blue-500 cursor:pointer mt-15"> Logout</button>
         </nav>
       </aside>
 

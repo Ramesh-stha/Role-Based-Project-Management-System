@@ -37,6 +37,7 @@ export async function POST(req: Request) {
     const description = formData.get("description") as string;
     const assigndateStr = formData.get("assigndate") as string;
     const submittiondateStr = formData.get("submittiondate") as string;
+const status = formData.get("status") as string ;
 
     if (!projectname || !description) {
       return NextResponse.json(
@@ -61,7 +62,7 @@ export async function POST(req: Request) {
         );
       }
     } else if (loggedInUser.role === "manager") {
-      manager = loggedInUser._id.toString();
+      manager = loggedInUser.username.toString();
       
     } else {
       return NextResponse.json({ message: "error" }, { status: 403 });
@@ -95,7 +96,7 @@ export async function POST(req: Request) {
       assigneddate,
       submittiondate,
       manager,
-      status,
+      status:"PENDING",
       photo: PhotoUrl,
       pdf: pdfUrl,
     });
@@ -112,3 +113,31 @@ export async function POST(req: Request) {
     );
   }
 }
+
+
+export async function PATCH(req: Request) {
+
+  try {
+    await ConnectDB();
+    const { id, status } = await req.json();
+
+    const project = await Project.findById(id);
+      console.log("STATUS RECEIVED:", status);
+    if (!project) {
+      return NextResponse.json({ message: "Project not found" }, { status: 404 });
+    } 
+    project.status = status;
+  
+
+    await project.save();
+console.log("UPDATED STATUS:", project.status);
+
+    return NextResponse.json({ message: "Project status updated successfully", status }, { status: 200 });
+  } catch (error: any) {
+    console.error("UPDATE PROJECT STATUS ERROR:", error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+};

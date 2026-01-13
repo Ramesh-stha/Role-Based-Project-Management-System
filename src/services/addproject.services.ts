@@ -1,6 +1,7 @@
 // addproject.services.t
 import {api} from "@/src/services/index"; // Adjust the import path as necessary
 import { NextResponse } from "next/server";
+import { GET } from "../app/api/(ProjectManagement)/getProject/route";
 export const addProjectService = async (formData: FormData) => {
   const res = await fetch("/api/createproject", {
     method: "POST",
@@ -19,7 +20,9 @@ export const addProjectService = async (formData: FormData) => {
 };
 export const getProjectService=async()=>{
   try{
-  const res=await api.get("/createproject");
+  const res=await api.get("/getProject",{
+ 
+  });
   return res.data;
 }
 catch (error:any) {
@@ -35,6 +38,18 @@ export const GetProjectbyId=async(id:string)=>{
 }
 catch (error:any) {
     console.error("CREATE PROJECT ERROR:", error);
+    return NextResponse.json({ message: "Internal Server Error", error: error.message }, { status: 500 });
+  }
+}
+export const updateProjectStatusService=async(id:string,status:string)=>{
+  try{
+    const res=await api.patch("/createproject",{
+      id,
+      status
+    });
+    return res.data;
+  } catch (error:any) {
+    console.error("UPDATE PROJECT STATUS ERROR:", error);
     return NextResponse.json({ message: "Internal Server Error", error: error.message }, { status: 500 });
   }
 }

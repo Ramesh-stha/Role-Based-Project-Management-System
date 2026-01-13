@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import profile from "@/public/assets/profile.png";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
-
+import { logout } from "@/src/actions/auth.actions";
 interface MenuItem {
   id: number;
   name: string;
@@ -26,7 +26,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+const handlelogout=()=>{
+return logout();
+}
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       
@@ -62,8 +64,11 @@ export default function AdminLayout({
               onClick={() => setSidebarOpen(false)}
             >
               {item.name}
+                 
             </Link>
+         
           ))}
+          <button onClick={handlelogout} className="bg-red-500 p-2 rounded-lg cursor-pointer hover:bg-blue-500 " >Logout</button>
         </nav>
       </aside>
 
