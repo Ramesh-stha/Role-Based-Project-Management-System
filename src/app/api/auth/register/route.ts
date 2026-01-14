@@ -10,7 +10,7 @@ export async function POST(req:Request){
     try{
         await ConnectDB();
 
-        const {username,organizationname,email,password, role}=await req.json();
+        const {username,organizationname,email,manager,password, role}=await req.json();
 
         if(!username  || !email || !password){
             return NextResponse.json({message:"Please fill the input field"},{status:400});
@@ -33,6 +33,7 @@ const newUser = await User.create({
     organizationname,
     role:userRole,
     email,
+    manager,
    password: hashedPassword,
 });
 

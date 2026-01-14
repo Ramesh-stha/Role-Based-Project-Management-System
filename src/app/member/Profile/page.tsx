@@ -1,41 +1,45 @@
-"use client";
-import User from "@/src/models/User";
+"use client"
+
 import React from "react";
 import "@/src/components/member/style/profile.css";
-import { NextResponse } from "next/server";
-
-const Userdata = [
-  {
-    _id: 1,
-    username: "Ram thapa",
-    email: "tram111@gmail.com",
-    manager: "Govinda KC",
-  },
-];
+import { useUser } from "@/src/hooks/getUser";
+import { logout } from "@/src/actions/auth.actions";
 
 const Profile = () => {
+  const { data: user, isLoading, isError, error } = useUser();
+
   const handleLogout = () => {
-    console.log("handle change");
+    logout();
   };
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error: {error?.message}</p>;
+  if (!user) return <p>No user data found.</p>;
+
+  console.log(user);
+
   return (
     <div className="profilecontainer"> 
-      <p className="P">Profile Details</p>
-      {Userdata.map((data) => (
-        <div key={data._id} className="data">
-          <p>UserName :{data.username}</p>
-          <p>Email :{data.email}</p>
-          <p>Manager :{data.manager}</p>
-        </div>
-      ))}
+      <p className="P">Profile Details</p> 
+      
+      <div className="data">
+        <p>UserName:</p>
+        <p>{user.username}</p>
+
+        <p>Email :</p>
+        <p>{user.email}</p>
+
+       <p>Manager</p>
+       <p>{user.manager}</p>
+      </div>
+
       <div className="update">
         <button className="b1">Update</button>
         <button className="b1">Reset Password</button>
-        <button className="b1" onClick={handleLogout}>
-          {" "}
-          Logout
-        </button>
+        <button className="b1" onClick={handleLogout}>Logout</button>
       </div>
     </div>
   );
 };
+
 export default Profile;

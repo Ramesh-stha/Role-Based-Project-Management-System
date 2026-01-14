@@ -1,9 +1,11 @@
-import React from 'react'
+"use client"
+import React from 'react';
+import Addproject from '@/src/components/admin/addproject';
 
 const page = () => {
   return (
     <div>
-      welcome to dashboard.
+      <Addproject/>
     </div>
   )
 }

@@ -3,9 +3,12 @@ import { ChangeEvent, useState } from "react";
 import AddProject from "@/src/components/admin/addproject";
 
 const Page = () => {
+ 
+
   return (
     <div>
-      <AddProject/>
+     
+      <AddProject />
     </div>
   );
 };

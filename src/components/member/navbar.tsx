@@ -16,11 +16,6 @@ const links: NavLink[] = [
     href: "/member",
   },
   {
-    id: 2,
-    name: "History",
-    href: "/member/board",
-  },
-  {
     id: 3,
     name: "Profile",
     href: "/member/Profile",

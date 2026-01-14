@@ -1,7 +1,7 @@
-"use client"
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useAddProject } from "@/src/hooks/useAddproject";
 import { useForm } from "react-hook-form";
+import { useUser } from "@/src/hooks/getUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createProjectSchema,
@@ -9,13 +9,22 @@ import {
 } from "@/src/schemas/addProject.schema";
 import Formerror from "../common/Formerror";
 import Image from "next/image";
-
+import { useGetManager, useGetMember } from "@/src/hooks/useGetmember";
+import { string } from "zod";
 const Addproject = () => {
   const { mutate, isPending } = useAddProject();
   const imageRef = useRef<HTMLInputElement>(null);
   const pdfRef = useRef<HTMLInputElement>(null);
+const{data:user,isLoading}=useUser();
+const{data:users,isLoading:isMemberLoading}=useGetMember();
+const {data:manager,isLoading:isManagerLoading}=useGetManager();
+
+console.log(users);
+
+console.log(manager);
 
   const [imagePreview, setImagePreview] = useState<string>("");
+
 
   const {
     register,
@@ -28,12 +37,20 @@ const Addproject = () => {
   const onSubmit = (values: createProjectValues) => {
     
     const formData = new FormData();
-    formData.append("projectname", values.projectName);
-    formData.append("description", values.description);
-    formData.append("assigndate", values.assignedDate);
-    formData.append("submittiondate", values.endDate);
-    formData.append("manager", values.manager);
 
+  formData.append("projectname", values.projectName);
+  formData.append("description", values.description);
+  formData.append("assigndate", values.assignedDate);
+  formData.append("submittiondate", values.endDate);
+  if (values.member) {
+    formData.append("member", values.member);
+  }
+  if (user?.role === "admin" && values.manager) {
+    formData.append("manager", values.manager);
+  }
+    
+    
+const status="PENDING";
     if (values.image?.[0]) {
       formData.append("photo", values.image[0]);
     }
@@ -41,11 +58,18 @@ const Addproject = () => {
     if (values.pdf?.[0]) {
       formData.append("pdf", values.pdf[0]);
     }
+    console.log(formData);
 
     mutate(formData, {
       onSuccess: () => alert("Project added successfully"),
+      
     });
   };
+
+
+  if(!users){
+  return <p>Loading members .....</p>
+}
 
   return (
     <div className="max-w-xl mx-auto bg-white p-6 shadow rounded">
@@ -99,17 +123,23 @@ const Addproject = () => {
         </div>
 
         <input type="file" accept="application/pdf" {...register("pdf")} />
-
-        <input
-          {...register("manager")}
-          placeholder="Manager"
-          className="border p-2 rounded"
-        />
-
-        <button
-          disabled={isPending}
-          className="bg-blue-600 text-white py-2 rounded"
-        >
+<label htmlFor="text">Choose Manager</label>
+   <select
+      {...register("manager")} >
+   {manager?.manager.map((item:any) => (
+        <option key={item._id} value={item.username}>
+          {item.username}
+        </option>))}
+    </select>
+    <label htmlFor="text">Choose Member</label>
+    <select
+      {...register("member")} >
+   {users?.user.map((item:any) => (
+        <option key={item._id} value={item.username}>
+          {item.username}
+        </option>))}
+    </select>
+        <button disabled={isPending} className="bg-blue-600 text-white py-2 rounded">
           {isPending ? "Saving..." : "Add Project"}
         </button>
       </form>

@@ -1,5 +1,8 @@
 "use client"
-import React from "react";
+import useGetProject from "@/src/hooks/useAddproject";
+import { useUpdateProjectStatus } from "@/src/hooks/useAddproject";
+import Image from "next/image";
+import React ,{useState} from "react";
 type TableData = {
   _id: number;
   Project_name: string;
@@ -51,8 +54,25 @@ const list: TableData[] = [
     End_date: "2025-10-05",
   },
 ];
+type Selection = {
+  user: string;
+  option: string;
+};
 
 const BoardTask = () => {
+ const { mutate, isPending } = useUpdateProjectStatus();
+
+
+
+  const {data,isLoading}=useGetProject();
+    const [option, setOption] = useState("");
+    console.log(data);
+    
+const handleChange = (id: string, status: string) => {
+  mutate({ id, status });
+};
+
+if(isLoading) return <p>Loding ......</p>
   return (
     <div className="overflow-x-auto">
       <table className="w-full border border-gray-300 bg-white text-gray-800 rounded-lg shadow-sm">
@@ -64,11 +84,13 @@ const BoardTask = () => {
             <th className="p-4 text-center">Status</th>
             <th className="p-4 text-left">Start Date</th>
             <th className="p-4 text-left">End Date</th>
+             <th className="p-4 text-left">Project Photo</th>
+              <th className="p-4 text-left">project PDF</th>
           </tr>
         </thead>
 
         <tbody>
-          {list.map((item, index) => (
+          {data.project.map((item:any,index:any) => (
             <tr
               key={item._id}
               className={`border-t text-sm hover:bg-gray-50 ${
@@ -76,25 +98,28 @@ const BoardTask = () => {
               }`}
             >
               <td className="p-4 text-center">{item._id}</td>
-              <td className="p-4">{item.Project_name}</td>
-              <td className="p-4">{item.Manager_name}</td>
+              <td className="p-4">{item.projectname}</td>
+              <td className="p-4">{item.manager}</td>
               <td className="p-4 text-center">
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    item.Status==="Completed"
-                    ?"bg-green-100 text-green-700"
-                    :item.Status==="In Progress"
-                    ?"bg-blue-100 text-blue-700"
-                    :item.Status==="Pending"
-                    ?"bg-red-100 text-red-700"
-                    :"bg-yellow-100 text-yellow-700"
-                  }`}
-                >
-                  {item.Status}
-                </span>
+                
+<select
+  value={item.status}
+  onChange={(e) => handleChange(item._id, e.target.value)}
+  className="border rounded px-2 py-1"
+>
+  <option value="PENDING">Pending</option>
+  <option value="ACCEPTED">Accepted</option>
+  <option value="COMPLETED">Completed</option>
+</select>
+
               </td>
-              <td className="p-4">{item.Start_date}</td>
-              <td className="p-4">{item.End_date}</td>
+              <td className="p-4">{item.assigneddate.split("T")[0]}</td>
+              <td className="p-4">{item.submittiondate.split("T")[0]}</td>
+               <td> <Image src={item.photo} alt="image not found" width={30} height={20} />
+               </td>
+               <td>
+               
+                <button className="p-4" onClick={()=>window.open(item.pdf, "_blank")} >view pdf</button></td>
             </tr>
           ))}
         </tbody>

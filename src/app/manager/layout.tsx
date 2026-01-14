@@ -6,6 +6,7 @@ import { useState } from "react";
 import profile from "@/public/assets/profile.png";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { logout } from "@/src/actions/auth.actions";
+
 interface MenuItem {
   id: number;
   name: string;
@@ -14,24 +15,25 @@ interface MenuItem {
 
 const items: MenuItem[] = [
   { id: 1, name: "Dashboard", href: "/admin/dashboard" },
-  { id: 2, name: "Employee Management", href: "/admin/employeeManagement" },
-  { id: 3, name: "Project Management", href: "/admin/projectManagement" },
-  { id: 4, name: "Organization Management", href: "/admin/organization" },
+  { id: 2, name: "Employee Management", href: "/manager/pm" },
+  { id: 3, name: "VIew Submitted Task", href: "/manager/managetask" },
 ];
 
 const email = "demo@example.com";
 
-export default function AdminLayout({
+
+export default function managerLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 const handlelogout=()=>{
-return logout();
+  return logout();
 }
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex flex-col md:flex-row">
+      
       {/* Sidebar */}
       <aside
         className={`
@@ -42,14 +44,6 @@ return logout();
           md:relative md:translate-x-0 md:flex-shrink-0
         `}
       >
-        <div className="flex justify-end">
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="text-white cursor-pointer md:hidden"
-          >
-            <HiOutlineX size={24} />
-          </button>
-        </div>
         {/* Profile */}
         <div className="mb-6 flex flex-col items-center">
           <Image
@@ -61,6 +55,7 @@ return logout();
           />
           <p className="p-1 m-1 text-sm font-semibold text-center">{email}</p>
         </div>
+
         {/* Menu */}
         <nav className="flex flex-col gap-3">
           {items.map((item) => (
@@ -71,11 +66,9 @@ return logout();
               onClick={() => setSidebarOpen(false)}
             >
               {item.name}
-                 
             </Link>
-         
           ))}
-          <button onClick={handlelogout} className="bg-red-500 p-2 rounded-lg cursor-pointer hover:bg-blue-500 " >Logout</button>
+          <button onClick={handlelogout} className="bg-red-500 rounded-lg p-2 hover:bg-blue-500 cursor:pointer mt-15"> Logout</button>
         </nav>
       </aside>
 
@@ -89,19 +82,23 @@ return logout();
 
       {/* Content Area */}
       <div className="flex-1 flex flex-col">
+
         {/* Mobile Header */}
         <header className="md:hidden flex justify-between items-center bg-gray-800 text-white p-4">
           <h2 className="font-bold">Admin Panel</h2>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-white cursor-pointer"
+            className="text-white"
           >
-            {sidebarOpen ? "" : <HiOutlineMenu size={24} />}
+            {sidebarOpen ? <HiOutlineX /> : <HiOutlineMenu />}
           </button>
         </header>
 
         {/* Secondary Space */}
-        <main className="flex-1 bg-gray-100 p-6">{children}</main>
+        <main className="flex-1 bg-gray-100 p-6">
+          {children}
+        </main>
+
       </div>
     </div>
   );
