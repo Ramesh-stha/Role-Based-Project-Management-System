@@ -36,6 +36,10 @@ const ProjectSchema= new mongoose.Schema(
         manager:{
             type:String,
             require:true,
+        },
+        member:{
+            type:String,
+            require:true
         }
 
         

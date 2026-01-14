@@ -6,6 +6,7 @@ export const createProjectSchema = z.object({
   assignedDate: z.string(),
   endDate: z.string(),
   manager: z.string().optional(),
+   member: z.string().optional(),
   image: z.any().optional(),
   pdf: z.any().optional(),
   status: z.enum(["PENDING", "ACCEPTED", "COMPLETED"]).optional(),

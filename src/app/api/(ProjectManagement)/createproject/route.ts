@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     const assigndateStr = formData.get("assigndate") as string;
     const submittiondateStr = formData.get("submittiondate") as string;
 const status = formData.get("status") as string ;
-
+const member=formData.get("member")as string;
     if (!projectname || !description) {
       return NextResponse.json(
         { message: "Project name and description are required" },
@@ -96,6 +96,7 @@ const status = formData.get("status") as string ;
       assigneddate,
       submittiondate,
       manager,
+      member,
       status:"PENDING",
       photo: PhotoUrl,
       pdf: pdfUrl,

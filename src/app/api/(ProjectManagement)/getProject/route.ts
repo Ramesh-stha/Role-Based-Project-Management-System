@@ -21,13 +21,13 @@ const {payload}:any= await jwtVerify(
     new TextEncoder().encode(JWT_SECRET)
 );
 const loginuser=await User.findById(payload.id);
-    const project = await Project.find({ manager: loginuser.manager });
+    const project = await Project.find({ member: loginuser.username });
 
     if(loginuser.role==="admin" ){
         const project = await Project.find();
         return NextResponse.json({message:"project is get successfully",project},{status:200});
-    }else if(loginuser.role==="manager"){
-        const project = await Project.find( );
+    }else if(loginuser.role==="manager"  ){
+        const project = await Project.find({manager: loginuser.username} );
         return NextResponse.json({message:"project is get successfully",project},{status:200});
     }else{
        return NextResponse.json({message:"project is get successfully",project},{status:200});

@@ -9,13 +9,22 @@ import {
 } from "@/src/schemas/addproject.schema";
 import Formerror from "../common/Formerror";
 import Image from "next/image";
-
+import { useGetManager, useGetMember } from "@/src/hooks/useGetmember";
+import { string } from "zod";
 const Addproject = () => {
   const { mutate, isPending } = useAddProject();
   const imageRef = useRef<HTMLInputElement>(null);
   const pdfRef = useRef<HTMLInputElement>(null);
 const{data:user,isLoading}=useUser();
+const{data:users,isLoading:isMemberLoading}=useGetMember();
+const {data:manager,isLoading:isManagerLoading}=useGetManager();
+
+console.log(users);
+
+console.log(manager);
+
   const [imagePreview, setImagePreview] = useState<string>("");
+
 
   const {
     register,
@@ -28,13 +37,18 @@ const{data:user,isLoading}=useUser();
   const onSubmit = (values: createProjectValues) => {
     const formData = new FormData();
 
-    formData.append("projectname", values.projectName);
-    formData.append("description", values.description);
-    formData.append("assigndate", values.assignedDate);
-    formData.append("submittiondate", values.endDate);
-   if (user.role === "admin" && values.manager) {
-      formData.append("manager", values.manager);
-    }
+  formData.append("projectname", values.projectName);
+  formData.append("description", values.description);
+  formData.append("assigndate", values.assignedDate);
+  formData.append("submittiondate", values.endDate);
+  if (values.member) {
+    formData.append("member", values.member);
+  }
+  if (user?.role === "admin" && values.manager) {
+    formData.append("manager", values.manager);
+  }
+    
+    
 const status="PENDING";
     if (values.image?.[0]) {
       formData.append("photo", values.image[0]);
@@ -50,6 +64,11 @@ const status="PENDING";
       
     });
   };
+
+
+  if(!users){
+  return <p>Loading members .....</p>
+}
 
   return (
     <div className="max-w-xl mx-auto bg-white p-6 shadow rounded">
@@ -76,9 +95,22 @@ const status="PENDING";
         </div>
 
         <input type="file" accept="application/pdf" {...register("pdf")} />
-
-        <input {...register("manager")} placeholder="Manager" className="border p-2 rounded" />
-    
+<label htmlFor="text">Choose Manager</label>
+   <select
+      {...register("manager")} >
+   {manager?.manager.map((item:any) => (
+        <option key={item._id} value={item.username}>
+          {item.username}
+        </option>))}
+    </select>
+    <label htmlFor="text">Choose Member</label>
+    <select
+      {...register("member")} >
+   {users?.user.map((item:any) => (
+        <option key={item._id} value={item.username}>
+          {item.username}
+        </option>))}
+    </select>
         <button disabled={isPending} className="bg-blue-600 text-white py-2 rounded">
           {isPending ? "Saving..." : "Add Project"}
         </button>
