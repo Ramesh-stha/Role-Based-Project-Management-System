@@ -1,15 +1,12 @@
 "use client"
-import BoardTask from "@/src/components/admin/BoardTask";
-
+import Addproject from "@/src/components/admin/addproject"
 const page = () => {
-
   const projectopen =()=>{
-
   }
   return (
     <>
-    <button onClick={projectopen}>Add Project</button>
-      <BoardTask/>
+    <button onClick={projectopen}></button>
+      <Addproject />
     </>
   )
 }

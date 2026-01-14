@@ -15,6 +15,8 @@ export const GET = async (
         { status: 400 }
       );
     }
+
+    
     const task = await Project.findById(id);
     if (!task) {
       return NextResponse.json(

@@ -1,8 +1,7 @@
-import Profile from "@/src/components/member/Profile"
 const page = () => {
   return (
     <div>
-      <Profile/>
+      <h2>welcome to manager dashboard.</h2>
     </div>
   )
 }

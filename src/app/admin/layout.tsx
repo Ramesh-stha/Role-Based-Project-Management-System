@@ -4,7 +4,9 @@ import Image from "next/image";
 import { useState } from "react";
 import profile from "@/public/assets/profile.png";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { useUser } from "@/src/hooks/getUser";
 import { logout } from "@/src/actions/auth.actions";
+
 interface MenuItem {
   id: number;
   name: string;
@@ -18,17 +20,22 @@ const items: MenuItem[] = [
   { id: 4, name: "Organization Management", href: "/admin/organization" },
 ];
 
-const email = "demo@example.com";
-
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-const handlelogout=()=>{
-return logout();
-}
+
+    //Extracting email and photo of member
+    const { data: user, isLoading, isError, error } = useUser();
+    if (isLoading) return <p>Loading...</p>;
+    if (isError) return <p>Error: {error?.message}</p>;
+    if (!user) return <p>No user data found.</p>;
+  
+  const handlelogout = () => {
+    return logout();
+  };
   return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
@@ -58,7 +65,7 @@ return logout();
             height={80}
             className="rounded-full p-2"
           />
-          <p className="p-1 m-1 text-sm font-semibold text-center">{email}</p>
+          <p className="p-1 m-1 text-sm font-semibold text-center">{user.email}</p>
         </div>
         {/* Menu */}
         <nav className="flex flex-col gap-3">
@@ -70,11 +77,14 @@ return logout();
               onClick={() => setSidebarOpen(false)}
             >
               {item.name}
-                 
             </Link>
-         
           ))}
-          <button onClick={handlelogout} className=" bg-red-200 text-red-400 p-2 rounded-md cursor-pointer hover:bg-red-700" >Logout</button>
+          <button
+            onClick={handlelogout}
+            className=" bg-red-400 text-white p-2 rounded-md cursor-pointer font-bold hover:bg-red-700"
+          >
+            Logout
+          </button>
         </nav>
       </aside>
 

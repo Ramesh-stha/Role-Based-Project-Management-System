@@ -1,8 +1,9 @@
-import Profile from "@/src/components/member/Profile"
+import React from 'react'
+
 const page = () => {
   return (
     <div>
-      <Profile/>
+      <p>hello from dashboard.</p>
     </div>
   )
 }

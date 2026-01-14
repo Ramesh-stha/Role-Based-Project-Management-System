@@ -1,10 +1,10 @@
 "use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import profile from "@/public/assets/profile.png";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { useUser } from "@/src/hooks/getUser";
 import { logout } from "@/src/actions/auth.actions";
 
 interface MenuItem {
@@ -13,27 +13,29 @@ interface MenuItem {
   href: string;
 }
 
-const items: MenuItem[] = [
-  { id: 1, name: "Dashboard", href: "/admin/dashboard" },
-  { id: 2, name: "Employee Management", href: "/manager/pm" },
-  { id: 3, name: "VIew Submitted Task", href: "/manager/managetask" },
+const items: MenuItem[] = [{ id: 1, name: "Dashboard", href: "/manager/dashboard" },
+  { id: 2, name: "Project Management", href: "/manager/pm" },
+  { id: 3, name: "View Task", href: "/manager/managetask" },
 ];
 
-const email = "demo@example.com";
-
-
-export default function managerLayout({
+export default function ManagerLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-const handlelogout=()=>{
-  return logout();
-}
+
+    //Extracting email and photo of member
+    const { data: user, isLoading, isError, error } = useUser();
+    if (isLoading) return <p>Loading...</p>;
+    if (isError) return <p>Error: {error?.message}</p>;
+    if (!user) return <p>No user data found.</p>;
+  
+  const handlelogout = () => {
+    return logout();
+  };
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      
+    <div className="min-h-screen flex">
       {/* Sidebar */}
       <aside
         className={`
@@ -44,6 +46,14 @@ const handlelogout=()=>{
           md:relative md:translate-x-0 md:flex-shrink-0
         `}
       >
+        <div className="flex justify-end">
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="text-white cursor-pointer md:hidden"
+          >
+            <HiOutlineX size={24} />
+          </button>
+        </div>
         {/* Profile */}
         <div className="mb-6 flex flex-col items-center">
           <Image
@@ -53,9 +63,8 @@ const handlelogout=()=>{
             height={80}
             className="rounded-full p-2"
           />
-          <p className="p-1 m-1 text-sm font-semibold text-center">{email}</p>
+          <p className="p-1 m-1 text-sm font-semibold text-center">{user.email}</p>
         </div>
-
         {/* Menu */}
         <nav className="flex flex-col gap-3">
           {items.map((item) => (
@@ -68,7 +77,12 @@ const handlelogout=()=>{
               {item.name}
             </Link>
           ))}
-          <button onClick={handlelogout} className="bg-red-500 rounded-lg p-2 hover:bg-blue-500 cursor:pointer mt-15"> Logout</button>
+          <button
+            onClick={handlelogout}
+            className=" bg-red-400 text-white p-2 rounded-md cursor-pointer font-bold hover:bg-red-700"
+          >
+            Logout
+          </button>
         </nav>
       </aside>
 
@@ -82,23 +96,19 @@ const handlelogout=()=>{
 
       {/* Content Area */}
       <div className="flex-1 flex flex-col">
-
         {/* Mobile Header */}
         <header className="md:hidden flex justify-between items-center bg-gray-800 text-white p-4">
-          <h2 className="font-bold">Admin Panel</h2>
+          <h2 className="font-bold">Manager Panel</h2>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-white"
+            className="text-white cursor-pointer"
           >
-            {sidebarOpen ? <HiOutlineX /> : <HiOutlineMenu />}
+            {sidebarOpen ? "" : <HiOutlineMenu size={24} />}
           </button>
         </header>
 
         {/* Secondary Space */}
-        <main className="flex-1 bg-gray-100 p-6">
-          {children}
-        </main>
-
+        <main className="flex-1 bg-gray-100 p-6">{children}</main>
       </div>
     </div>
   );
