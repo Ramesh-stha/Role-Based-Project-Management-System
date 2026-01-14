@@ -11,14 +11,10 @@ export const useLogin = () => {
   const router = useRouter();
 
   return useMutation({
+    mutationKey:["login"],
     mutationFn: loginService,
-
     onSuccess: (data:any) => {
       const role = data.user.role;
-
-
-
-   
     },
   });
   

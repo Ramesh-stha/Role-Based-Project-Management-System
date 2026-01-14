@@ -1,12 +1,12 @@
-
-import React, { useRef, useState } from "react";
+"use client"
+import { useRef, useState } from "react";
 import { useAddProject } from "@/src/hooks/useAddproject";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createProjectSchema,
   createProjectValues,
-} from "@/src/schemas/addproject.schema";
+} from "@/src/schemas/addProject.schema";
 import Formerror from "../common/Formerror";
 import Image from "next/image";
 
@@ -26,8 +26,8 @@ const Addproject = () => {
   });
 
   const onSubmit = (values: createProjectValues) => {
+    
     const formData = new FormData();
-
     formData.append("projectname", values.projectName);
     formData.append("description", values.description);
     formData.append("assigndate", values.assignedDate);
@@ -52,30 +52,64 @@ const Addproject = () => {
       <h1 className="text-xl font-bold mb-4">Add Project</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <input {...register("projectName")} placeholder="Project Name" className="border p-2 rounded" />
-        {errors.projectName && <Formerror>{errors.projectName.message}</Formerror>}
+        <input
+          {...register("projectName")}
+          placeholder="Project Name"
+          className="border p-2 rounded"
+        />
+        {errors.projectName && (
+          <Formerror>{errors.projectName.message}</Formerror>
+        )}
 
-        <textarea {...register("description")} placeholder="Description" className="border p-2 rounded" />
-        {errors.description && <Formerror>{errors.description.message}</Formerror>}
+        <textarea
+          {...register("description")}
+          placeholder="Description"
+          className="border p-2 rounded"
+        />
+        {errors.description && (
+          <Formerror>{errors.description.message}</Formerror>
+        )}
 
-        <input type="file" accept="image/*" {...register("image")} onChange={(e) => {
-          if (e.target.files?.[0]) {
-            setImagePreview(URL.createObjectURL(e.target.files[0]));
-          }
-        }} />
+        <input
+          type="file"
+          accept="image/*"
+          {...register("image")}
+          onChange={(e) => {
+            if (e.target.files?.[0]) {
+              setImagePreview(URL.createObjectURL(e.target.files[0]));
+            }
+          }}
+        />
 
-        {imagePreview && <Image src={imagePreview} alt="preview" width={120} height={80} />}
+        {imagePreview && (
+          <Image src={imagePreview} alt="preview" width={120} height={80} />
+        )}
 
         <div className="flex gap-2">
-          <input type="date" {...register("assignedDate")} className="border p-2 rounded w-full" />
-          <input type="date" {...register("endDate")} className="border p-2 rounded w-full" />
+          <input
+            type="date"
+            {...register("assignedDate")}
+            className="border p-2 rounded w-full"
+          />
+          <input
+            type="date"
+            {...register("endDate")}
+            className="border p-2 rounded w-full"
+          />
         </div>
 
         <input type="file" accept="application/pdf" {...register("pdf")} />
 
-        <input {...register("manager")} placeholder="Manager" className="border p-2 rounded" />
+        <input
+          {...register("manager")}
+          placeholder="Manager"
+          className="border p-2 rounded"
+        />
 
-        <button disabled={isPending} className="bg-blue-600 text-white py-2 rounded">
+        <button
+          disabled={isPending}
+          className="bg-blue-600 text-white py-2 rounded"
+        >
           {isPending ? "Saving..." : "Add Project"}
         </button>
       </form>

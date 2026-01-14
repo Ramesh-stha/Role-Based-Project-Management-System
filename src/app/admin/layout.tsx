@@ -16,6 +16,7 @@ const items: MenuItem[] = [
   { id: 1, name: "Dashboard", href: "/admin/dashboard" },
   { id: 2, name: "Employee Management", href: "/admin/employeeManagement" },
   { id: 3, name: "Project Management", href: "/admin/projectManagement" },
+  { id: 4, name: "Organization Management", href: "/admin/organization" },
 ];
 
 const email = "demo@example.com";
@@ -28,8 +29,7 @@ export default function AdminLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      
+    <div className="min-h-screen flex">
       {/* Sidebar */}
       <aside
         className={`
@@ -40,6 +40,14 @@ export default function AdminLayout({
           md:relative md:translate-x-0 md:flex-shrink-0
         `}
       >
+        <div className="flex justify-end">
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="text-white cursor-pointer md:hidden"
+          >
+            <HiOutlineX size={24} />
+          </button>
+        </div>
         {/* Profile */}
         <div className="mb-6 flex flex-col items-center">
           <Image
@@ -51,7 +59,6 @@ export default function AdminLayout({
           />
           <p className="p-1 m-1 text-sm font-semibold text-center">{email}</p>
         </div>
-
         {/* Menu */}
         <nav className="flex flex-col gap-3">
           {items.map((item) => (
@@ -77,23 +84,19 @@ export default function AdminLayout({
 
       {/* Content Area */}
       <div className="flex-1 flex flex-col">
-
         {/* Mobile Header */}
         <header className="md:hidden flex justify-between items-center bg-gray-800 text-white p-4">
           <h2 className="font-bold">Admin Panel</h2>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-white"
+            className="text-white cursor-pointer"
           >
-            {sidebarOpen ? <HiOutlineX /> : <HiOutlineMenu />}
+            {sidebarOpen ? "" : <HiOutlineMenu size={24} />}
           </button>
         </header>
 
         {/* Secondary Space */}
-        <main className="flex-1 bg-gray-100 p-6">
-          {children}
-        </main>
-
+        <main className="flex-1 bg-gray-100 p-6">{children}</main>
       </div>
     </div>
   );

@@ -1,19 +1,18 @@
-import Project from "@/src/models/project.model";
+import Organization from "@/src/models/organization.model";
 import ConnectDB from "@/src/utils/db";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   try {
     await ConnectDB();
-
-    const project = await Project.find();
+    const orgData = await Organization.find();
     return NextResponse.json(
-      { message: "project is get successfully", project },
+      { message: "Organization successfully fetched.", orgData },
       { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "internal error occured" },
+      { message: "Error occured while fetching model." },
       { status: 500 }
     );
   }

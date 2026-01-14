@@ -1,10 +1,10 @@
-import Organization from '@/src/components/admin/Organization'
-import React from 'react'
-
+import Organization from '@/src/components/organization_components/Organization'
+import OrganizationList from '@/src/components/organization_components/OrganizationList'
 const page = () => {
   return (
     <>
     <Organization/>
+    <OrganizationList/>
     </>
   )
 }

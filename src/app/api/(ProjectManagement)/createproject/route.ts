@@ -6,7 +6,6 @@ import { UploadImage } from "@/src/utils/upload-image";
 
 export async function POST(req: Request) {
   try {
-  
     await ConnectDB();
 
     //  Parse form data
@@ -19,7 +18,9 @@ export async function POST(req: Request) {
 
     // Convert to Date objects
     const assigneddate = assigndateStr ? new Date(assigndateStr) : undefined;
-    const submittiondate = submittiondateStr ? new Date(submittiondateStr) : undefined;
+    const submittiondate = submittiondateStr
+      ? new Date(submittiondateStr)
+      : undefined;
 
     //  Get files
     const photoFile = formData.get("photo") as File | null;
@@ -30,13 +31,19 @@ export async function POST(req: Request) {
     let pdfUrl: string | null = null;
 
     if (photoFile) {
-      const uploadedImage = await UploadImage(photoFile, "image-uploads") as { secure_url: string; public_id: string };
+      const uploadedImage = (await UploadImage(photoFile, "image-uploads")) as {
+        secure_url: string;
+        public_id: string;
+      };
       console.log("Uploaded Image:", uploadedImage);
       PhotoUrl = uploadedImage.secure_url;
     }
 
     if (pdfFile) {
-      const uploadedPDF = await UploadImage(pdfFile, "pdf-uploads") as { secure_url: string; public_id: string };
+      const uploadedPDF = (await UploadImage(pdfFile, "pdf-uploads")) as {
+        secure_url: string;
+        public_id: string;
+      };
       console.log("Uploaded PDF:", uploadedPDF);
       pdfUrl = uploadedPDF.secure_url;
     }
@@ -61,28 +68,39 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
-export async function GET(req:Request){
-    try{
-       await ConnectDB();
+export async function GET(req: Request) {
+  try {
+    await ConnectDB();
 
-       const project=await Project.find();
-       return NextResponse.json({message:"project is get successfully",project},{status:200});
-       
-
-    }catch(error){
-        return NextResponse.json({message:"internal error occured"},{status:500});
-    }
-    
+    const project = await Project.find();
+    return NextResponse.json(
+      { message: "project is get successfully", project },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "internal error occured" },
+      { status: 500 }
+    );
+  }
 }
 
-export async function GETbyId(req:Request,{params}:{params:{id:string}}){
-    try{
-       await ConnectDB();
-        const {id}=params;
-        const project=await Project.findById(id);
-       return NextResponse.json({message:"project is get successfully",project},{status:200});
-    }catch(error){
-        return NextResponse.json({message:"internal error occured"},{status:500});
-    }
-    
+export async function GETbyId(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await ConnectDB();
+    const { id } = params;
+    const project = await Project.findById(id);
+    return NextResponse.json(
+      { message: "project is get successfully", project },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "internal error occured" },
+      { status: 500 }
+    );
+  }
 }
