@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import {useRegister} from "@/src/hooks/useRegister";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 const page = () => {
   const [form, setForm] = useState({
     username: "",
@@ -19,12 +20,12 @@ const router= useRouter();
     e.preventDefault();
     mutate(form,{
       onSuccess:(data)=>{
-        alert ("data is added successfully");
-      
+        toast.success("Signup successful.");
+   
         router.push("/login");
       },
       onError:(err:any)=>{
-        alert("failed to add data");
+        toast.error("Signup failed.");
 
       }
     })
@@ -71,7 +72,7 @@ const router= useRouter();
 
         <button
           type="submit"
-          className="bg-green-500 hover:bg-green-600 transition-colors rounded-md py-2 mb-4 font-semibold"
+          className="bg-green-500 hover:bg-green-600 transition-colors rounded-md py-2 mb-4 cursor-pointer font-semibold"
         >
           Sign Up
         </button>
@@ -80,9 +81,9 @@ const router= useRouter();
           Already have an account?{" "}
           <Link
             href="/login"
-            className="text-green-400 hover:underline"
+            className="text-green-400 hover:underline cursor-pointer"
           >
-            Sign In
+            login
           </Link>
         </p>
       </form>

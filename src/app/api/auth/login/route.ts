@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       { status: 401 }
     );
   }
-
+  
   const payload = {
     id: user._id.toString(),
     email: user.email,

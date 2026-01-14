@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createProjectSchema,
   createProjectValues,
-} from "@/src/schemas/addProject.schema";
+} from "@/src/schemas/addproject.schema";
 import Formerror from "../common/Formerror";
 import Image from "next/image";
 import { useGetManager, useGetMember } from "@/src/hooks/useGetmember";

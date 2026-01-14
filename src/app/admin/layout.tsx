@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -75,7 +74,7 @@ return logout();
             </Link>
          
           ))}
-          <button onClick={handlelogout} className="bg-red-500 p-2 rounded-lg cursor-pointer hover:bg-blue-500 " >Logout</button>
+          <button onClick={handlelogout} className=" bg-red-200 text-red-400 p-2 rounded-md cursor-pointer hover:bg-red-700" >Logout</button>
         </nav>
       </aside>
 

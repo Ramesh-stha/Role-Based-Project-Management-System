@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useLogin } from "@/src/hooks/useLogin";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 type loginstate={
   email:string;
   password:string;
@@ -23,11 +24,11 @@ const router = useRouter();
     mutate(form,{
       onSuccess:(data)=>{
         router.push("/");
-        alert("Login Ssuccessfully");
+        toast.success("Login successful.")
 
       },
       onError:(err:any)=>{
-        alert("Login again login failed!!");
+        toast.error("Login failed.");
       }
     })
   };
@@ -63,14 +64,14 @@ const router = useRouter();
 
         <button
           type="submit"
-          className="bg-green-500 hover:bg-green-600 transition-colors rounded-md py-2 mb-4 font-semibold"
+          className="bg-green-500 hover:bg-green-600 transition-colors rounded-md py-2 mb-4 cursor-pointer font-semibold"
         >
           Login
         </button>
 
         <p className="text-center text-gray-400 text-sm">
           Don't have account?{" "}
-          <Link href="/signup" className="text-green-400 hover:underline">
+          <Link href="/signup" className="text-green-400 cursor-pointer hover:underline">
             register
           </Link>
         </p>
