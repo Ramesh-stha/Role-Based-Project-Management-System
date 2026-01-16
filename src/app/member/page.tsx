@@ -1,7 +1,6 @@
-import Taskview from "@/src/components/member/taskview"
 const memberpage=()=>{
     return(
-     <Taskview/>
+     <h2>This is the member page.</h2>
     );
 }
 export default memberpage;

@@ -4,6 +4,7 @@ import { useAddProject } from "@/src/hooks/useAddproject";
 import { useForm } from "react-hook-form";
 import { useUser } from "@/src/hooks/getUser";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 import {
   createProjectSchema,
   createProjectValues,
@@ -12,7 +13,11 @@ import Formerror from "../common/Formerror";
 import Image from "next/image";
 import { useGetManager, useGetMember } from "@/src/hooks/useGetmember";
 
-const Addproject = () => {
+type AddProjectProps = {
+  onClose: () => void;
+};
+
+const Addproject = ({ onClose }: AddProjectProps) => {
   const { mutate, isPending } = useAddProject();
   const imageRef = useRef<HTMLInputElement>(null);
   const pdfRef = useRef<HTMLInputElement>(null);
@@ -22,7 +27,7 @@ const Addproject = () => {
   const { data: manager, isLoading: isManagerLoading } = useGetManager();
 
   const [imagePreview, setImagePreview] = useState<string>("");
-
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -48,7 +53,14 @@ const Addproject = () => {
     if (values.pdf?.[0]) formData.append("pdf", values.pdf[0]);
 
     mutate(formData, {
-      onSuccess: () => alert("Project added successfully"),
+      onSuccess: () => {
+        toast.success("Project added successfully.");
+        onClose();
+      },
+      onError: () => {
+        toast.error("Failed to add project.");
+        onClose();
+      },
     });
   };
 
@@ -57,18 +69,13 @@ const Addproject = () => {
   }
 
   return (
-   
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-3">
-     
-      <div className="w-full max-w-2xl bg-white p-4 sm:p-6 shadow rounded-md">
+    <div className="flex items-center justify-center ">
+      <div className=" max-w-2xl bg-white p-2 sm:p-4  rounded-md">
         <h1 className="text-lg sm:text-xl font-bold mb-4 text-center">
           Add Project
         </h1>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* Project Name */}
           <div>
             <input
@@ -102,9 +109,7 @@ const Addproject = () => {
               {...register("image")}
               onChange={(e) => {
                 if (e.target.files?.[0]) {
-                  setImagePreview(
-                    URL.createObjectURL(e.target.files[0])
-                  );
+                  setImagePreview(URL.createObjectURL(e.target.files[0]));
                 }
               }}
             />
@@ -139,10 +144,8 @@ const Addproject = () => {
 
           {/* Manager */}
           {user?.role === "admin" && (
-            <div>
-              <label className="font-semibold text-sm">
-                Choose Manager
-              </label>
+            <>
+              {/* <label className="font-semibold text-sm">Choose Manager</label> */}
               <select
                 {...register("manager")}
                 className="border p-2 rounded w-full"
@@ -154,17 +157,15 @@ const Addproject = () => {
                   </option>
                 ))}
               </select>
-            </div>
+            </>
           )}
 
           {/* Member */}
           <div>
-            <label className="font-semibold text-sm">
-              Choose Member
-            </label>
+            {/* <label className="font-semibold text-sm">Choose Member</label> */}
             <select
               {...register("member")}
-              className="border p-2 rounded w-full"
+              className="border w-full p-2 rounded-md"
             >
               <option value="">Select member</option>
               {users?.user.map((item: any) => (
@@ -174,7 +175,6 @@ const Addproject = () => {
               ))}
             </select>
           </div>
-
           {/* Submit */}
           <button
             disabled={isPending}

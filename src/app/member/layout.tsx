@@ -39,7 +39,7 @@ export default function MemberLayout({
     <div className="min-h-screen flex">
       {/* Sidebar */}
       <aside
-        className={`
+        className={`rounded-b-md sm:rounded-b-none
           bg-gray-800 text-white p-4 flex flex-col
           fixed top-0 left-0 w-64 z-50
           transform transition-transform duration-300

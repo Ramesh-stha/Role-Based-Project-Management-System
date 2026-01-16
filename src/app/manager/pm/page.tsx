@@ -1,14 +1,10 @@
-"use client"
-import Addproject from "@/src/components/admin/addproject"
+import BoardTask from "@/src/components/admin/BoardTask";
 const page = () => {
-  const projectopen =()=>{
-  }
   return (
     <>
-    <button onClick={projectopen}></button>
-      <Addproject />
+      <BoardTask />
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;

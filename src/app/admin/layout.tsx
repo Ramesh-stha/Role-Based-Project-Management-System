@@ -45,7 +45,7 @@ export default function AdminLayout({
           fixed top-0 left-0 w-64 z-50
           transform transition-transform duration-300
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-          md:relative md:translate-x-0 md:flex-shrink-0
+          md:relative md:translate-x-0 md:shrink-0
         `}
       >
         <div className="flex justify-end">
