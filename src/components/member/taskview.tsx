@@ -37,10 +37,10 @@ const Taskview = () => {
             <div>
               <p className="font-semibold">Project Title: {item.projectname}</p>
               <p className="text-sm text-gray-600">
-                Assign Date: {item.assigneddate.split("T")[0]}
+                Assign Date: {item.assigneddate?.split("T")[0]}
               </p>
               <p className="text-sm text-gray-600">
-                Submission Date: {item.submittiondate.split("T")[0]}
+                Submission Date: {item.submittiondate?.split("T")[0]}
               </p>
             </div>
           </div>

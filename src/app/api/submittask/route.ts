@@ -9,6 +9,7 @@ export async function POST(req: Request) {
 
     const formData = await req.formData();
     const pdfFile = formData.get("pdf") as File | null;
+    
 
     if (!pdfFile) {
       return NextResponse.json(

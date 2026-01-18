@@ -60,11 +60,11 @@ export default function TaskDetails({
       <h1 className="text-2xl font-bold mb-2">{task.projectname}</h1>
       <p className="mb-2">Description: {task.description}</p>
       <p className="mb-2">
-        Assigned Date: {task.assigneddate.split("T")[0]}
+        Assigned Date: {task.assigneddate?.split("T")[0]}
       </p>
       <p className="mb-2">
         Submission Date:
-        {task.submittiondate.split("T")[0]}
+        {task.submittiondate?.split("T")[0]}
       </p>
       {task.pdf && (
         <button
