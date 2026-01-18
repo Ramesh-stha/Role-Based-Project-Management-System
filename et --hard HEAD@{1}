@@ -1,0 +1,20 @@
+[33md1038d6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33md1038d6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{1}: pull: Fast-forward
+[33m1ca86b0[m HEAD@{2}: checkout: moving from f221852a57198389f5e836f7e4bef8748b94242c to main
+[33mf221852[m HEAD@{3}: commit: updated change
+[33m83e6eca[m HEAD@{4}: commit: Updated project features and task management
+[33m9fc2725[m HEAD@{5}: commit: updated commit
+[33m929a9b0[m HEAD@{6}: checkout: moving from e0585be03745cc63776aab9bc5295fc705d86fb5 to 929a9b0958871e79182e770b2dbbf1f82481fa0a
+[33me0585be[m HEAD@{7}: commit: WIP: member profile changes
+[33m1ca86b0[m HEAD@{8}: pull https://github.com/Ramesh-stha/Role-Based-Project-Management-System.git: Fast-forward
+[33m929a9b0[m HEAD@{9}: checkout: moving from main to 929a9b0958871e79182e770b2dbbf1f82481fa0a
+[33m1ca86b0[m HEAD@{10}: pull: Fast-forward
+[33m929a9b0[m HEAD@{11}: reset: moving to HEAD
+[33m929a9b0[m HEAD@{12}: commit: added update
+[33mbfe9bc5[m HEAD@{13}: commit: updated task submittion
+[33m6fc8673[m HEAD@{14}: commit: profile,create project update
+[33m49ff6fc[m HEAD@{15}: commit: dynamic value update
+[33m02c9983[m HEAD@{16}: commit: updated changes
+[33m5f7d137[m HEAD@{17}: commit: updated commit
+[33m2f48124[m HEAD@{18}: commit: updated backend
+[33m39c06a1[m HEAD@{19}: clone: from https://github.com/Ramesh-stha/Role-Based-Project-Management-System.git

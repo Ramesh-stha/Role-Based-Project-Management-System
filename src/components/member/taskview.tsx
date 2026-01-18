@@ -16,8 +16,10 @@ const Taskview = () => {
   if (error) return <p>error to load data ......</p>;
 
   return (
-    <div className="p-6">
-      <p className="text-lg font-semibold mb-4">Assign Task Lists</p>
+    <div className="p-6 flex flex-col items-center rounded-md shadow-md">
+      <p className="text-lg sm:text-2xl font-bold m-2 bg-gray-700 rounded-md p-1 sm:p-2 text-white">
+        Assigned Task Lists
+      </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {data.project?.map((item: any) => (
           <div
@@ -28,9 +30,9 @@ const Taskview = () => {
             <Image
               src={item.photo}
               alt="Project"
-              width={100}
+              width={80}
               height={80}
-              className="rounded"
+              className="rounded-md overflow-clip"
             />
             <div>
               <p className="font-semibold">Project Title: {item.projectname}</p>
