@@ -1,7 +1,15 @@
 import mongoose from "mongoose";
 
 const taskSchema =new mongoose.Schema({
-    taskname:{
+    username:{
+        type:String,
+        require:true,
+    },
+     manager:{
+        type:String,
+        require:true,
+    },
+     email:{
         type:String,
         require:true,
     },

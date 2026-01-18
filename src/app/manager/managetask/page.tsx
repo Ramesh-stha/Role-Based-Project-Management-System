@@ -1,7 +1,8 @@
 import React from "react";
 
-export const page=()=>{
+const page=()=>{
     return(
         <div>this is the task view page</div>
     )
 }
+export default page;
