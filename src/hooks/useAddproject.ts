@@ -1,10 +1,13 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { addProjectService, getProjectService, GetProjectbyId,updateProjectStatusService } from "@/src/services/addproject.services";
 
 
 export const useAddProject = () => {
   return useMutation({
     mutationFn: (formData: FormData) => addProjectService(formData),
+    onSuccess:()=>{
+      QueryClient
+    }
   });
 };
 

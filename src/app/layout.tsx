@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "../Provider/QueryProvider";
 import ToastProvider from "../Provider/ToastProvider";
+import { SocketProvider } from "../Provider/SocketProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,10 +27,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} `}>
+        <SocketProvider>
         <QueryProvider>
           {children}
           <ToastProvider />
         </QueryProvider>
+        </SocketProvider>
       </body>
     </html>
   );
