@@ -1,21 +1,22 @@
 import { useEffect } from "react";
 import { useSocket } from "../Provider/SocketProvider";
 
-export const useSocketHandler = (setComment: Function) => {
+export const useSocketHandler = (commentRefetch:any) => {
   const socket = useSocket();
 
   useEffect(() => {
     if (!socket) return;
 
-    const handler = (data: any) => {
-      setComment((prev: any[]) => [...prev, data]);
-    };
+    
 
-    socket.on("newComment", handler);
+    socket.on("newComment", (data:any)=>{
+      console.log('data:', data);
+      commentRefetch()
+    });
 
     return () => {
-      socket.off("newComment", handler);
+      socket.off("newComment");
     };
-  }, [socket, setComment]);
+  }, [socket]);
 };
  

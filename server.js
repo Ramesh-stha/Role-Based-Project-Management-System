@@ -26,11 +26,11 @@ nextApp.prepare().then(() => {
     socket.emit("connected");
 
 
-    //comment on server
-   // socket.on("addComment", (data)=>{
-     //   console.log("comment received", data)
-       // io.emit("addComment", data)
-   // })
+    // comment on server
+   socket.on("newComment", (data)=>{
+       console.log("comment received", data)
+       io.emit("newComment", data)
+   })
 
 
    
