@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useAddProject } from "@/src/hooks/useAddproject";
 import { useForm } from "react-hook-form";
 import { useUser } from "@/src/hooks/getUser";
@@ -23,11 +23,22 @@ const Addproject = ({ onClose }: AddProjectProps) => {
   const pdfRef = useRef<HTMLInputElement>(null);
 
   const { data: user } = useUser();
-  const { data: users, isLoading: isMemberLoading } = useGetMember();
+  const { data: member, isLoading: isMemberLoading } = useGetMember();
   const { data: manager, isLoading: isManagerLoading } = useGetManager();
+
+  //keeping track of manager
+  const [selectedManager, setSelectedManager] = useState<any>(null);
+
+  //keeping track of manager when logged in as manager
+   useEffect(()=>{
+    if(user?.role === "manager"){
+      setSelectedManager(user.username)
+    }
+   },[user]);
 
   const [imagePreview, setImagePreview] = useState<string>("");
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -63,6 +74,13 @@ const Addproject = ({ onClose }: AddProjectProps) => {
       },
     });
   };
+
+  // filtering member based on assigned manager
+  // console.log("member is ", member);
+  
+  const filteredMembers = member?.user.filter(
+    (items: any) => items.manager === selectedManager,
+  );
 
   if (isMemberLoading || isManagerLoading) {
     return <p className="text-center mt-10">Loading data...</p>;
@@ -149,6 +167,7 @@ const Addproject = ({ onClose }: AddProjectProps) => {
               <select
                 {...register("manager")}
                 className="border p-2 rounded w-full"
+                onChange={(e) => setSelectedManager(e.target.value)}
               >
                 <option value="">Select manager</option>
                 {manager?.manager.map((item: any) => (
@@ -168,8 +187,8 @@ const Addproject = ({ onClose }: AddProjectProps) => {
               className="border w-full p-2 rounded-md"
             >
               <option value="">Select member</option>
-              {users?.user.map((item: any) => (
-                <option key={item._id} value={item.username}>
+              {filteredMembers.map((item: any) => (
+                <option key={item._id} value={item._id}>
                   {item.username}
                 </option>
               ))}

@@ -15,10 +15,11 @@ export const api = axios.create({
 export const handleApiError = (error: AxiosError | Error): Error => {
   if (axios.isAxiosError(error)) {
     const message =
-      error.response?.data?.message || "AN Error occurred on the server";
+      error.response?.data?.message || "An error occurred on the server";
     return new Error(message);
   }
-  return new Error(error.message || "An Unknown error occurred");
+
+  return new Error(error.message || "An unknown error occurred");
 };
 
 api.interceptors.response.use(

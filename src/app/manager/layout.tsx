@@ -14,7 +14,7 @@ interface MenuItem {
 }
 
 const items: MenuItem[] = [
-  { id: 1, name: "Dashboard", href: "/manager/dashboard" },
+  { id: 1, name: "Dashboard", href: "/manager" },
   { id: 2, name: "Project Management", href: "/manager/pm" },
   { id: 3, name: "View Task", href: "/manager/managetask" },
 ];

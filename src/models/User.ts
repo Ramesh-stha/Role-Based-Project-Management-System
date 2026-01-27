@@ -8,8 +8,8 @@ const userSchema = new mongoose.Schema(
       require: true,
     },
     organizationname: {
-      type: String,
-      require: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Organization",
     },
     role: {
       type: String,
@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema(
       require: true,
       minLength: 8,
     },
+    projects:{
+      type:[mongoose.Schema.Types.ObjectId],
+      ref:"Project",
+    }
   },
   {
     timestamps: true,

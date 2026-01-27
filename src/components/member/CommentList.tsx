@@ -1,37 +1,47 @@
 import { useGetComment } from "@/src/hooks/getComment";
 import { useSocketHandler } from "@/src/hooks/socket.hook";
-import toast from "react-hot-toast";
 
 const CommentList = () => {
-      const { data: comments, isLoading, refetch, error } = useGetComment();
-    
-  console.log("comments are ", comments);
-      useSocketHandler(refetch);
-    
-      if(error){
-        return <p>Error: ${error.message}</p>
-      }
+  const { data: comments, isLoading, refetch, error } = useGetComment();
+  useSocketHandler(refetch);
 
-  if (isLoading) {
-    return <p>loading ....</p>;
-  }
-     if (!comments) {
-    return <p>No comments, Be the first one to comment</p>;
-  }
+  if (error) return <p className="text-red-500">Failed to load comments</p>;
+  if (isLoading) return <p>Loading comments...</p>;
+
   return (
-  <div className="grid grid-cols-2 ">
-        {comments?.comment.map((item: any) => (
-          <div
-            key={item._id}
-            className="flex flex-col h-auto w-auto  border border-yellow-500 p-2 m-2 rounded-lg shadow-md"
-          >
-            <p className=" ">{item.username}</p>
-            <p className="p-3  rounded-md shadow text-sm break-words">
-              Message:{item.text}
-            </p>
-          </div>
-        ))}
+    <fieldset className="border border-gray-300 rounded-lg p-4 mt-4 w-full">
+      <legend className="px-2 text-sm font-semibold text-gray-700">
+        Comments
+      </legend>
+
+      {/* Scrollable View */}
+      <div className="max-h-[300px] overflow-y-auto flex flex-col gap-4 pr-2">
+        {!comments?.comment?.length ? (
+          <p className="text-gray-500 text-sm">
+            No comments yet. Be the first one 👀
+          </p>
+        ) : (
+          comments.comment.map((item: any) => (
+            <div key={item._id} className="flex items-start gap-3">
+              {/* Avatar */}
+              <div className="w-9 h-9 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold">
+                {item.username?.charAt(0).toUpperCase()}
+              </div>
+
+              {/* Comment Bubble */}
+              <div className="bg-gray-100 p-3 rounded-lg shadow max-w-[80%]">
+                <p className="text-xs font-semibold text-gray-700">
+                  {item.username}
+                </p>
+                <p className="text-sm text-gray-800 break-words">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
       </div>
+    </fieldset>
   );
 };
 

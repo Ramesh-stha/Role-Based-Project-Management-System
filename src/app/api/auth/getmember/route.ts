@@ -1,16 +1,21 @@
 import User from "@/src/models/User";
 import {ConnectDB} from "@/src/utils/db";
 import { NextResponse } from "next/server";
-
+import Project from "@/src/models/project.model";
 export async function GET(req:Request){
 
     try{
         await ConnectDB();
-     
-    const user= await User.find( {role:"member"}).select("-password");
-    
-    console.log(user);
+        const project= await Project.find();
+        console.log(project);
 
+     
+    const user= await User.find( {role:"member"}).select("-password").populate({
+        path:"projects",
+        match:{status:"completed"}
+       
+    });
+    
         return NextResponse.json({message:"User is fetch successfully",user},{status:200});
     
 

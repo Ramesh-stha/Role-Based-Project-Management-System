@@ -14,9 +14,9 @@ interface MenuItem {
 }
 
 const items: MenuItem[] = [
-  { id: 1, name: "Dashboard", href: "/member/dashboard" },
-  { id: 2, name: "Task Board", href: "/member/board" },
-  { id: 3, name: "Profile", href: "/member/profile" },
+ 
+  { id: 1, name: "Task Board", href: "/member" },
+  { id: 2, name: "Profile", href: "/member/profile" },
 ];
 
 export default function MemberLayout({

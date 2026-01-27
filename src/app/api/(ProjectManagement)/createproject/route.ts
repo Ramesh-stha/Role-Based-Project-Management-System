@@ -1,3 +1,6 @@
+
+import sendMail from "@/src/utils/sendMail";
+
 import ConnectDB from "@/src/utils/db";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
@@ -37,8 +40,9 @@ export async function POST(req: Request) {
     const description = formData.get("description") as string;
     const assigndateStr = formData.get("assigndate") as string;
     const submittiondateStr = formData.get("submittiondate") as string;
-    const status = formData.get("status") as string;
-    const member = formData.get("member") as string;
+const status = formData.get("status") as string ;
+const member=formData.get("member") as string;
+
     if (!projectname || !description) {
       return NextResponse.json(
         { message: "Project name and description are required" },
@@ -47,16 +51,14 @@ export async function POST(req: Request) {
     }
 
     const assigneddate = assigndateStr ? new Date(assigndateStr) : undefined;
-    const submittiondate = submittiondateStr
-      ? new Date(submittiondateStr)
-      : undefined;
+    const submittiondate = submittiondateStr ? new Date(submittiondateStr) : undefined;
 
     /* -------- MANAGER LOGIC -------- */
     let manager: string;
 
     if (loggedInUser.role === "admin") {
       manager = formData.get("manager") as string;
-
+      
       if (!manager) {
         return NextResponse.json(
           { message: "Manager is required for admin" },
@@ -65,6 +67,7 @@ export async function POST(req: Request) {
       }
     } else if (loggedInUser.role === "manager") {
       manager = loggedInUser.username.toString();
+      
     } else {
       return NextResponse.json({ message: "error" }, { status: 403 });
     }
@@ -77,14 +80,14 @@ export async function POST(req: Request) {
     let pdfUrl: string | null = null;
 
     if (photoFile) {
-      const uploadedImage = (await UploadImage(photoFile, "image-uploads")) as {
+      const uploadedImage = await UploadImage(photoFile, "image-uploads") as {
         secure_url: string;
       };
       PhotoUrl = uploadedImage.secure_url;
     }
 
     if (pdfFile) {
-      const uploadedPDF = (await UploadImage(pdfFile, "pdf-uploads")) as {
+      const uploadedPDF = await UploadImage(pdfFile, "pdf-uploads") as {
         secure_url: string;
       };
       pdfUrl = uploadedPDF.secure_url;
@@ -98,10 +101,35 @@ export async function POST(req: Request) {
       submittiondate,
       manager,
       member,
-      status: "PENDING",
+      status:"PENDING",
       photo: PhotoUrl,
       pdf: pdfUrl,
     });
+    
+    /* ---------- SEND EMAIL TO MEMBERS ---------- */
+    const members = await User.find({
+      manager,
+      role: "member",
+    });
+
+    console.log('members:', members);
+
+ 
+    await Promise.all(
+      members.map(async(user)=>{
+      await sendMail({
+        to: user.email,
+        subject: " New Project Assigned",
+        html: `
+          <h2>New Project Assigned</h2>
+          <p><strong>Project:</strong> ${projectname}</p>
+          <p><strong>Description:</strong> ${description}</p>
+          <p><strong>Manager:</strong> ${manager}</p>
+        `,
+      });
+    })
+    )
+
 
     return NextResponse.json(
       { message: "Project created successfully", createdProject },
@@ -116,28 +144,25 @@ export async function POST(req: Request) {
   }
 }
 
+
 export async function PATCH(req: Request) {
+
   try {
     await ConnectDB();
     const { id, status } = await req.json();
 
     const project = await Project.findById(id);
-    console.log("STATUS RECEIVED:", status);
+      console.log("STATUS RECEIVED:", status);
     if (!project) {
-      return NextResponse.json(
-        { message: "Project not found" },
-        { status: 404 }
-      );
-    }
+      return NextResponse.json({ message: "Project not found" }, { status: 404 });
+    } 
     project.status = status;
+  
 
     await project.save();
-    console.log("UPDATED STATUS:", project.status);
+console.log("UPDATED STATUS:", project.status);
 
-    return NextResponse.json(
-      { message: "Project status updated successfully", status },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Project status updated successfully", status }, { status: 200 });
   } catch (error: any) {
     console.error("UPDATE PROJECT STATUS ERROR:", error);
     return NextResponse.json(
@@ -145,4 +170,4 @@ export async function PATCH(req: Request) {
       { status: 500 }
     );
   }
-}
+};

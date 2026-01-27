@@ -1,9 +1,11 @@
 import { ConnectDB } from "@/src/utils/db";
 import { NextResponse } from "next/server";
-import User from "@/src/models/User"
+import User from "@/src/models/User";
+import sendMail from "@/src/utils/sendMail";
 import bcrypt from 'bcrypt';
 import { json } from "node:stream/consumers";
 import jwt from "jsonwebtoken";
+import { send } from "node:process";
 
 export async function POST(req:Request){
 
@@ -36,9 +38,23 @@ const newUser = await User.create({
     manager,
    password: hashedPassword,
 });
+console.log(newUser);
+
+
+await sendMail({
+to: newUser.email,
+subject:"Registered SUccessfully",
+html:
+`<h2> Welcome ${newUser.username}</h2>
+<p> your Account is created Successfully </p>
+<p> <strong>Role:</strong> ${newUser.role}</p>
+<p>you can now login to the system</p>
+
+`
+})
+
 
 return NextResponse.json({message:"User registered successfully",user:newUser},{status:201});
-
 
 }catch(error){
       console.error(error);

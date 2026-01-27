@@ -4,6 +4,8 @@ import AddProject from "@/src/components/admin/addproject";
 import { useUpdateProjectStatus } from "@/src/hooks/useAddproject";
 import { useState } from "react";
 import { HiOutlineX } from "react-icons/hi";
+import toast from "react-hot-toast";
+import useDelete from "@/src/hooks/mutation/useDelete";
 type ActiveForm = "AddProject" | null;
 
 type TableData = {
@@ -19,20 +21,37 @@ type TableData = {
 
 
 const BoardTask = () => {
-  const { mutate, isPending } = useUpdateProjectStatus();
+ 
+const {mutate:deleteProject}=useDelete();
 
   const { data, isLoading } = useGetProject();
   // const [option, setOption] = useState("");
   // console.log(data);
-
+const { mutate: updateStatus } = useUpdateProjectStatus();
   const [activeform, setActiveForm] = useState<ActiveForm>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const handleChange = (id: string, status: string) => {
-    mutate({ id, status });
-  };
+
+ const handleChange = (id: string, status: string) => {
+  updateStatus({ id, status });
+};
+const handleDelete = (_id: string) => {
+
+  if (!_id) return;
+  deleteProject(_id, {
+    onSuccess: () => {
+      toast.success("Project deleted successfully");
+    },
+    onError: () => {
+      toast.error("Failed to delete project");
+    },
+  });
+};
 
   if (isLoading) return <p>Loding ......</p>;
+   const handleLoading=()=>{
+    return <p>Loading ...</p>
+   }
   return (
     <div className="flex flex-col items-center m-1 p-2 overflow-x-auto">
       {/* Add Button */}
@@ -90,6 +109,7 @@ const BoardTask = () => {
             <th className="p-4 text-center">End Date</th>
             <th className="p-4 text-left">Project Photo</th>
             <th className="p-4 text-center">project PDF</th>
+                 <th className="p-4 text-center">Delete</th>
           </tr>
         </thead>
 
@@ -116,10 +136,10 @@ const BoardTask = () => {
                 </select>
               </td>
               <td className="p-4 text-center">
-                {item.assigneddate.split("T")[0]}
+                {item.assigneddate?.split("T")[0]}
               </td>
               <td className="p-4 text-center">
-                {item.submittiondate.split("T")[0]}
+                {item.submittiondate?.split("T")[0]}
               </td>
               <td className="text-center">
                 <button
@@ -136,7 +156,20 @@ const BoardTask = () => {
                 >
                   view pdf
                 </button>
+              
               </td>
+              <td>  
+                
+            <button
+  onClick={() => {
+    console.log("Clicked Delete:", item._id);
+    handleDelete(item._id);
+  }}
+  className="bg-green-400 rounded-lg hover:bg-red-600 p-2.5 ml-5"
+>
+  Delete
+</button>
+</td>
             </tr>
           ))}
         </tbody>
@@ -153,10 +186,10 @@ const BoardTask = () => {
             </div>
             <div className="p-1 text-gray-500">Manager : {item.manager}</div>
             <div className="p-1 text-gray-500">
-              Assigned Date : {item.assigneddate.split("T")[0]}
+              Assigned Date : {item.assigneddate?.split("T")[0]}
             </div>
             <div className="text-gray-500">
-              Submission Date : {item.submittiondate.split("T")[0]}
+              Submission Date : {item.submittiondate?.split("T")[0]}
             </div>
             <div className="m-2 p-2 rounded-md shadow-md">
               <button

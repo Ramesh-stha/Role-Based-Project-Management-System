@@ -1,6 +1,5 @@
-const memberpage=()=>{
-    return(
-     <h2>This is the member page.</h2>
-    );
-}
-export default memberpage;
+import Taskview from "@/src/components/member/taskview";
+const page= () => {
+  return <Taskview />;
+};
+export default page;

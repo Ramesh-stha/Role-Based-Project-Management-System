@@ -7,6 +7,9 @@ import Image from "next/image";
 import { useGetProjectbyId } from "@/src/hooks/useAddproject";
 import { useSavetask } from "@/src/hooks/useSavetask";
 import Comment from "@/src/components/member/comment";
+import { handleApiError } from "@/src/services";
+import NotFound from "../../not-found";
+import toast from "react-hot-toast";
 export default function TaskDetails({
   params,
 }: {
@@ -31,7 +34,7 @@ export default function TaskDetails({
     mutate(formData, {
       onSuccess: () => {
         toast.success("Task submitted successfully.")
-        router.push("/member");
+       
       },
     });
   };
@@ -46,8 +49,12 @@ export default function TaskDetails({
     return <p>image is null</p>
   }
 
+  if(error){
+  NotFound();
+  }
   return (
-    <div className="p-4 max-w-xl mx-auto">
+   <>
+   {task.task? <div className="p-4 max-w-xl mx-auto">
       <button
         className="mb-4 text-blue-500 hover:underline"
         onClick={() => router.push("/member")}
@@ -97,6 +104,6 @@ export default function TaskDetails({
         Submit Task
       </button>
       <Comment/>
-    </div>
+    </div>:<p>No task</p>}</>
   );
 }
